@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(python3:*)",
+      "Bash(pip3 install:*)",
+      "Bash(pip --version:*)",
+      "Bash(pip install:*)",
+      "Bash(/Library/Frameworks/Python.framework/Versions/3.12/bin/python3:*)",
+      "Bash(wc:*)",
+      "Bash(find:*)",
+      "Bash(/Library/Frameworks/Python.framework/Versions/3.12/bin/pip install:*)",
+      "Bash(curl:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)"
+    ]
+  }
+}

@@ -1,0 +1,337 @@
+{
+  "url": "https://www.commbank.com.au/commbank-yello.html",
+  "title": "CommBank Yello",
+  "summary": "Get access to to exclusive benefits, cashbacks and discounts with CommBank Yello, our customer recognition program designed to shine the spotlight on you.",
+  "nodes": [
+    {
+      "node_id": "0001",
+      "name": "Popular searches",
+      "summary": "Popular searches",
+      "content_preview": "",
+      "level": 3,
+      "chunk_ids": [
+        "ecb85c051a748d54",
+        "e304b3ba5563b9ac",
+        "02587985e9f86acc",
+        "370b373c8a9fcc6e"
+      ],
+      "nodes": []
+    },
+    {
+      "node_id": "0002",
+      "name": "Say hello to CommBank Yello!",
+      "summary": "Get access to exclusive benefits, cashbacks and discounts with CommBank Yello. More Benefits, More Offers. More Thanks.",
+      "content_preview": "Get access to exclusive benefits, cashbacks and discounts with CommBank Yello. More Benefits, More Offers. More Thanks.",
+      "level": 1,
+      "chunk_ids": [],
+      "nodes": [
+        {
+          "node_id": "0003",
+          "name": "Benefits",
+          "summary": "Benefits",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0004",
+              "name": "Cashback",
+              "summary": "Cashback on CommBank products Cashback on participating brands 1",
+              "content_preview": "Cashback on CommBank products Cashback on participating brands 1",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0005",
+              "name": "Offers & discounts",
+              "summary": "Save on shopping, food, utilities and entertainment",
+              "content_preview": "Save on shopping, food, utilities and entertainment",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0006",
+              "name": "Early access",
+              "summary": "Presale and preferred tickets to selected events",
+              "content_preview": "Presale and preferred tickets to selected events",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0007",
+          "name": "How CommBank Yello works",
+          "summary": "How CommBank Yello works",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0008",
+          "name": "Eligibility",
+          "summary": "Enjoy great value for longer. If you meet the criteria, you’ll get access for the next 3 months.\n \nWe check eligibility in the first week of the month, based on your activity last month. Read the FAQs",
+          "content_preview": "Enjoy great value for longer. If you meet the criteria, you’ll get access for the next 3 months.\n \nWe check eligibility in the first week of the month, based on your activity last month. Read the FAQs",
+          "level": 2,
+          "chunk_ids": [
+            "05d1900d363d63f8"
+          ],
+          "nodes": [
+            {
+              "node_id": "0009",
+              "name": "CommBank Yello",
+              "summary": "Have an eligible CommBank transaction account Make 5+ eligible transactions from an eligible account/s",
+              "content_preview": "Have an eligible CommBank transaction account Make 5+ eligible transactions from an eligible account/s",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0010",
+              "name": "CommBank Yello Plus",
+              "summary": "CommBank Yello Plus",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0011",
+              "name": "",
+              "summary": "Have an eligible CommBank transaction account Make 15+ eligible transactions from an eligible account/s Keep an eligible balance of $500 for any 15 days (or more) unless you’re under 26",
+              "content_preview": "Have an eligible CommBank transaction account Make 15+ eligible transactions from an eligible account/s Keep an eligible balance of $500 for any 15 days (or more) unless you’re under 26",
+              "level": 3,
+              "chunk_ids": [
+                "2d0eed32c733a92a",
+                "8da8d1ae5d3ebcf3",
+                "449e061f403902ad"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0012",
+              "name": "CommBank Yello Gold",
+              "summary": "CommBank Yello Gold",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0013",
+              "name": "",
+              "summary": "Have an eligible CommBank transaction account Make 15+ eligible transactions from an eligible account/s Keep an eligible balance of $50K for any 15 days (or more) OR have a CommBank combined funded ho",
+              "content_preview": "Have an eligible CommBank transaction account Make 15+ eligible transactions from an eligible account/s Keep an eligible balance of $50K for any 15 days (or more) OR have a CommBank combined funded ho",
+              "level": 3,
+              "chunk_ids": [
+                "2d0eed32c733a92a",
+                "8da8d1ae5d3ebcf3",
+                "449e061f403902ad"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0014",
+              "name": "CommBank Yello Diamond",
+              "summary": "CommBank Yello Diamond",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0015",
+              "name": "",
+              "summary": "Have an eligible CommBank transaction account Make 15+ eligible transactions from an eligible account/s Keep an eligible balance of $250K for any 15 days (or more) OR have a CommBank combined funded h",
+              "content_preview": "Have an eligible CommBank transaction account Make 15+ eligible transactions from an eligible account/s Keep an eligible balance of $250K for any 15 days (or more) OR have a CommBank combined funded h",
+              "level": 3,
+              "chunk_ids": [
+                "2d0eed32c733a92a",
+                "8da8d1ae5d3ebcf3",
+                "449e061f403902ad"
+              ],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0016",
+          "name": "Benefits",
+          "summary": "Benefits",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0017",
+              "name": "",
+              "summary": "CommBank Yello",
+              "content_preview": "CommBank Yello",
+              "level": 3,
+              "chunk_ids": [
+                "2d0eed32c733a92a",
+                "8da8d1ae5d3ebcf3",
+                "449e061f403902ad"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0018",
+              "name": "",
+              "summary": "CommBank Yello Plus",
+              "content_preview": "CommBank Yello Plus",
+              "level": 3,
+              "chunk_ids": [
+                "2d0eed32c733a92a",
+                "8da8d1ae5d3ebcf3",
+                "449e061f403902ad"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0019",
+              "name": "",
+              "summary": "CommBank Yello Gold",
+              "content_preview": "CommBank Yello Gold",
+              "level": 3,
+              "chunk_ids": [
+                "2d0eed32c733a92a",
+                "8da8d1ae5d3ebcf3",
+                "449e061f403902ad"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0020",
+              "name": "",
+              "summary": "CommBank Yello Diamond",
+              "content_preview": "CommBank Yello Diamond",
+              "level": 3,
+              "chunk_ids": [
+                "2d0eed32c733a92a",
+                "8da8d1ae5d3ebcf3",
+                "449e061f403902ad"
+              ],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0021",
+          "name": "Save on Australia's favourite retailers with new offers weekly",
+          "summary": "Save on Australia's favourite retailers with new offers weekly",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0022",
+          "name": "Personalised offers",
+          "summary": "Personalised offers",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0023",
+          "name": "Love concerts, events & competitions?",
+          "summary": "Get early access to your favourite events with presale tickets. From live concerts to comedy gigs, you could be front and centre at the hottest events. Eligible customers also get the chance to win ex",
+          "content_preview": "Get early access to your favourite events with presale tickets. From live concerts to comedy gigs, you could be front and centre at the hottest events. Eligible customers also get the chance to win ex",
+          "level": 2,
+          "chunk_ids": [
+            "c2a85e98447af40d"
+          ],
+          "nodes": []
+        },
+        {
+          "node_id": "0024",
+          "name": "How to access CommBank Yello",
+          "summary": "How to access CommBank Yello",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0025",
+          "name": "Not an existing CommBank customer?",
+          "summary": "Not an existing CommBank customer?",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0026",
+          "name": "Already a CommBank customer?",
+          "summary": "Save time by using NetBank. Don’t have NetBank? Register now .\nOpen in NetBank",
+          "content_preview": "Save time by using NetBank. Don’t have NetBank? Register now .\nOpen in NetBank",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0027",
+          "name": "New CommBank customer?",
+          "summary": "Open now",
+          "content_preview": "Open now",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0028",
+          "name": "Offers & discounts for your business",
+          "summary": "Boost your business with benefits from CommBank Yello for Business. Discover more",
+          "content_preview": "Boost your business with benefits from CommBank Yello for Business. Discover more",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0029",
+          "name": "Things you should know",
+          "summary": "Things you should know",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0030",
+              "name": "QUICK LINKS",
+              "summary": "Security & scams Help & support Financial assistance Complaints & compliments Accessibility",
+              "content_preview": "Security & scams Help & support Financial assistance Complaints & compliments Accessibility",
+              "level": 4,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0031",
+              "name": "ABOUT US",
+              "summary": "About CommBank Careers at CommBank Sustainability Newsroom Investor centre",
+              "content_preview": "About CommBank Careers at CommBank Sustainability Newsroom Investor centre",
+              "level": 4,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0032",
+              "name": "IMPORTANT INFORMATION",
+              "summary": "Important documents Banking Code of Practice Cookies policy Privacy statement Modern Slavery Statement",
+              "content_preview": "Important documents Banking Code of Practice Cookies policy Privacy statement Modern Slavery Statement",
+              "level": 4,
+              "chunk_ids": [],
+              "nodes": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

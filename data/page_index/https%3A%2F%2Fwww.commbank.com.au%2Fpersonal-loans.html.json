@@ -1,0 +1,495 @@
+{
+  "url": "https://www.commbank.com.au/personal-loans.html",
+  "title": "Personal Loans | Flexible Repayments Available With CommBank",
+  "summary": "Apply now for a personal loan, secured or unsecured, for a range of loan purposes. Discover our competitive interest rates, and our discounts for energy efficient loans.",
+  "nodes": [
+    {
+      "node_id": "0001",
+      "name": "Popular searches",
+      "summary": "Popular searches",
+      "content_preview": "",
+      "level": 3,
+      "chunk_ids": [
+        "ab717e1ba4b1e674",
+        "46d8419c0e21b00b",
+        "40839f2d974cb135",
+        "f27b2c2724f97697",
+        "208aff1ad5b66707",
+        "9785d8fcd172a5ba"
+      ],
+      "nodes": []
+    },
+    {
+      "node_id": "0002",
+      "name": "Personal loans & car loans",
+      "summary": "Take control of your next step with a flexible CommBank Personal Loan that best suits you and puts you in charge.\nGet my rates & apply Close × Already a customer banking online with us? Save time by u",
+      "content_preview": "Take control of your next step with a flexible CommBank Personal Loan that best suits you and puts you in charge.\nGet my rates & apply Close × Already a customer banking online with us? Save time by u",
+      "level": 1,
+      "chunk_ids": [
+        "f76cdbe7c09fedb4"
+      ],
+      "nodes": [
+        {
+          "node_id": "0003",
+          "name": "Already a customer banking online with us?",
+          "summary": "Save time by using your NetBank details.\nApply in NetBank",
+          "content_preview": "Save time by using your NetBank details.\nApply in NetBank",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0004",
+          "name": "New customer or don't bank online with us?",
+          "summary": "Apply online",
+          "content_preview": "Apply online",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0005",
+          "name": "Current offers",
+          "summary": "Current offers",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0006",
+              "name": "",
+              "summary": "EV Access Program (EVAP)",
+              "content_preview": "EV Access Program (EVAP)",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0007",
+              "name": "",
+              "summary": "Up to $400 cashback on your new car",
+              "content_preview": "Up to $400 cashback on your new car",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0008",
+              "name": "",
+              "summary": "Get a discounted rate of 3.99% p.a. and no establishment or loan service fees",
+              "content_preview": "Get a discounted rate of 3.99% p.a. and no establishment or loan service fees",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0009",
+          "name": "Turn your New Year’s goals into reality, from renovating your home to planning your World Cup trip.",
+          "summary": "You could get the funds you need with an Unsecured Personal Loan. Get my rates and apply Close × Already a customer banking online with us? Save time by using your NetBank details. Apply in NetBank or",
+          "content_preview": "You could get the funds you need with an Unsecured Personal Loan. Get my rates and apply Close × Already a customer banking online with us? Save time by using your NetBank details. Apply in NetBank or",
+          "level": 2,
+          "chunk_ids": [
+            "0547ff992bb39dcd"
+          ],
+          "nodes": []
+        },
+        {
+          "node_id": "0010",
+          "name": "Already a customer banking online with us?",
+          "summary": "Save time by using your NetBank details.\nApply in NetBank",
+          "content_preview": "Save time by using your NetBank details.\nApply in NetBank",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0011",
+          "name": "New customer or don't bank online with us?",
+          "summary": "Apply online",
+          "content_preview": "Apply online",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0012",
+          "name": "Apply online in minutes and manage your loan anytime with the CommBank app",
+          "summary": "Enjoy a truly digital experience with the CommBank app, where you’ll have access to a range of features: Track your monthly repayments in real time Change your repayment amount and frequency Be inform",
+          "content_preview": "Enjoy a truly digital experience with the CommBank app, where you’ll have access to a range of features: Track your monthly repayments in real time Change your repayment amount and frequency Be inform",
+          "level": 2,
+          "chunk_ids": [
+            "5275eb994f7cd9c1"
+          ],
+          "nodes": []
+        },
+        {
+          "node_id": "0013",
+          "name": "Already a customer banking online with us?",
+          "summary": "Save time by using your NetBank details.\nApply in NetBank",
+          "content_preview": "Save time by using your NetBank details.\nApply in NetBank",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0014",
+          "name": "New customer or don't bank online with us?",
+          "summary": "Apply online",
+          "content_preview": "Apply online",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0015",
+          "name": "Explore CommBank Personal Loans",
+          "summary": "Explore CommBank Personal Loans",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0016",
+          "name": "Choose a personal loan that’s right for you",
+          "summary": "Choose a personal loan that’s right for you",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0017",
+              "name": "",
+              "summary": "Fixed Rate Loan",
+              "content_preview": "Fixed Rate Loan",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0018",
+              "name": "",
+              "summary": "Variable Rate Loan",
+              "content_preview": "Variable Rate Loan",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0019",
+              "name": "",
+              "summary": "Secured Fixed Rate Car Loan",
+              "content_preview": "Secured Fixed Rate Car Loan",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0020",
+          "name": "Already a customer banking online with us?",
+          "summary": "Save time by using your NetBank details.\nApply in NetBank",
+          "content_preview": "Save time by using your NetBank details.\nApply in NetBank",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0021",
+          "name": "New customer or don't bank online with us?",
+          "summary": "Apply online",
+          "content_preview": "Apply online",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0022",
+          "name": "Get started",
+          "summary": "Get started",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0023",
+              "name": "How to apply?",
+              "summary": "Apply: Fill in the online form. We’ll ask you some details and you’ll get a response within 60 seconds after you submit your application. Contract: If approved, we’ll send you a contract. Accept the c",
+              "content_preview": "Apply: Fill in the online form. We’ll ask you some details and you’ll get a response within 60 seconds after you submit your application. Contract: If approved, we’ll send you a contract. Accept the c",
+              "level": 3,
+              "chunk_ids": [
+                "ea4a72a1ebf81ed0"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0024",
+              "name": "Am I eligible?",
+              "summary": "To be eligible to apply for a personal loan you must: Be over 18 years old Be eligible to work in Australia Live in Australia Be an Australian or New Zealand citizen, Australian permanent resident or ",
+              "content_preview": "To be eligible to apply for a personal loan you must: Be over 18 years old Be eligible to work in Australia Live in Australia Be an Australian or New Zealand citizen, Australian permanent resident or ",
+              "level": 3,
+              "chunk_ids": [
+                "9f495f0a62bed128"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0025",
+              "name": "What documents will I need?",
+              "summary": "During the application process, we may ask you for some documents. These may include: Proof of ID if you’re a new customer​ Passport details if you’re on a visa Proof of income if your application is ",
+              "content_preview": "During the application process, we may ask you for some documents. These may include: Proof of ID if you’re a new customer​ Passport details if you’re on a visa Proof of income if your application is ",
+              "level": 3,
+              "chunk_ids": [
+                "99256436fc529207"
+              ],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0026",
+          "name": "Ready to get started with your trusted personal lender?",
+          "summary": "As recognised by Canstar and AFR for Digital Banking, Innovation and Sustainability. Get my rates & apply Close × Already a customer banking online with us? Save time by using your NetBank details. Ap",
+          "content_preview": "As recognised by Canstar and AFR for Digital Banking, Innovation and Sustainability. Get my rates & apply Close × Already a customer banking online with us? Save time by using your NetBank details. Ap",
+          "level": 2,
+          "chunk_ids": [
+            "0fd61a773561986b"
+          ],
+          "nodes": []
+        },
+        {
+          "node_id": "0027",
+          "name": "Already a customer banking online with us?",
+          "summary": "Save time by using your NetBank details.\nApply in NetBank",
+          "content_preview": "Save time by using your NetBank details.\nApply in NetBank",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0028",
+          "name": "New customer or don't bank online with us?",
+          "summary": "Apply online",
+          "content_preview": "Apply online",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0029",
+          "name": "Not sure which personal loan is right for you?",
+          "summary": "Compare",
+          "content_preview": "Compare",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0030",
+          "name": "All the ways you can use a personal loan",
+          "summary": "All the ways you can use a personal loan",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0031",
+          "name": "Tools & calculators",
+          "summary": "Tools & calculators",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0032",
+              "name": "Repayments calculator",
+              "summary": "Understand what your repayments will be. Adjust the term and the amount to meet your budget.\nUse calculator",
+              "content_preview": "Understand what your repayments will be. Adjust the term and the amount to meet your budget.\nUse calculator",
+              "level": 3,
+              "chunk_ids": [
+                "dc81495ebe6f2da9"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0033",
+              "name": "How much can I borrow?",
+              "summary": "Estimate how much you can borrow and how much the repayments will be at the current interest rate.\nUse borrowing calculator",
+              "content_preview": "Estimate how much you can borrow and how much the repayments will be at the current interest rate.\nUse borrowing calculator",
+              "level": 3,
+              "chunk_ids": [
+                "165bc764646af77b"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0034",
+              "name": "Help me choose",
+              "summary": "Use our personal loan selector tool to choose between Variable, Fixed Rate or Secured.\nUse selector",
+              "content_preview": "Use our personal loan selector tool to choose between Variable, Fixed Rate or Secured.\nUse selector",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0035",
+              "name": "How much does it cost to run an electric vehicle?",
+              "summary": "Use our comparison tool to see the estimated running costs, emissions and vehicle prices of an EV compared to a petrol, diesel or hybrid vehicle.\nGet started",
+              "content_preview": "Use our comparison tool to see the estimated running costs, emissions and vehicle prices of an EV compared to a petrol, diesel or hybrid vehicle.\nGet started",
+              "level": 3,
+              "chunk_ids": [
+                "8f50cca06716f419"
+              ],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0036",
+          "name": "Got questions? We’ve got answers",
+          "summary": "Got questions? We’ve got answers",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0037",
+              "name": "What is a personal loan and when is it preferred?",
+              "summary": "A personal loan is a type of loan where you can borrow a certain amount of money to use for almost any personal expense and you’ll repay it over time with interest. They are typically used for large p",
+              "content_preview": "A personal loan is a type of loan where you can borrow a certain amount of money to use for almost any personal expense and you’ll repay it over time with interest. They are typically used for large p",
+              "level": 3,
+              "chunk_ids": [
+                "d0155b3a56b59d56"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0038",
+              "name": "How much can I borrow with a personal loan?",
+              "summary": "Loan amounts typically range from $4,000 to $120,000, depending on the lender and the type of personal loan you’re looking to apply for.",
+              "content_preview": "Loan amounts typically range from $4,000 to $120,000, depending on the lender and the type of personal loan you’re looking to apply for.",
+              "level": 3,
+              "chunk_ids": [
+                "36336ecae666a692"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0039",
+              "name": "What are the most common reasons people take out personal loans?",
+              "summary": "Top reasons include buying a new or used car, debt consolidation, home improvements, unexpected expenses, holidays, and living expenses.",
+              "content_preview": "Top reasons include buying a new or used car, debt consolidation, home improvements, unexpected expenses, holidays, and living expenses.",
+              "level": 3,
+              "chunk_ids": [
+                "e2f239719caf82c7"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0040",
+              "name": "What’s the difference between a secured and unsecured personal loan?",
+              "summary": "Secured personal loans are backed by an asset (e.g. the car you’re buying). This also means you can typically borrow at a lower interest rate. Unsecured personal loans are not backed by any asset. Thi",
+              "content_preview": "Secured personal loans are backed by an asset (e.g. the car you’re buying). This also means you can typically borrow at a lower interest rate. Unsecured personal loans are not backed by any asset. Thi",
+              "level": 3,
+              "chunk_ids": [
+                "c73c4e4615418789"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0041",
+              "name": "Can I get my personal loan refinanced?",
+              "summary": "Yes, you can refinance a personal loan. Refinancing involves taking out a new loan to pay off your existing one, ideally with better terms such as a lower interest rate, reduced monthly repayments, or",
+              "content_preview": "Yes, you can refinance a personal loan. Refinancing involves taking out a new loan to pay off your existing one, ideally with better terms such as a lower interest rate, reduced monthly repayments, or",
+              "level": 3,
+              "chunk_ids": [
+                "e71cd566433a8fbd"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0042",
+              "name": "Will applying for a personal loan affect my credit score?",
+              "summary": "Yes, it can impact your credit score in either a positive or negative way. Being mindful about your applications and managing your credit responsibly can help keep your score healthy. However, if you ",
+              "content_preview": "Yes, it can impact your credit score in either a positive or negative way. Being mindful about your applications and managing your credit responsibly can help keep your score healthy. However, if you ",
+              "level": 3,
+              "chunk_ids": [
+                "444773500e3efd63"
+              ],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0043",
+          "name": "We can help",
+          "summary": "Ask Ceba Get instant help from our virtual assistant Contact us FAQs Search support and our most frequently asked questions",
+          "content_preview": "Ask Ceba Get instant help from our virtual assistant Contact us FAQs Search support and our most frequently asked questions",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0044",
+              "name": "Ask Ceba",
+              "summary": "Get instant help from our virtual assistant",
+              "content_preview": "Get instant help from our virtual assistant",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0045",
+              "name": "FAQs",
+              "summary": "Search support and our most frequently asked questions",
+              "content_preview": "Search support and our most frequently asked questions",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0046",
+          "name": "Things you should know",
+          "summary": "Things you should know",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0047",
+              "name": "QUICK LINKS",
+              "summary": "Security & scams Help & support Financial assistance Complaints & compliments Accessibility",
+              "content_preview": "Security & scams Help & support Financial assistance Complaints & compliments Accessibility",
+              "level": 4,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0048",
+              "name": "ABOUT US",
+              "summary": "About CommBank Careers at CommBank Sustainability Newsroom Investor centre",
+              "content_preview": "About CommBank Careers at CommBank Sustainability Newsroom Investor centre",
+              "level": 4,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0049",
+              "name": "IMPORTANT INFORMATION",
+              "summary": "Important documents Banking Code of Practice Cookies policy Privacy statement Modern Slavery Statement",
+              "content_preview": "Important documents Banking Code of Practice Cookies policy Privacy statement Modern Slavery Statement",
+              "level": 4,
+              "chunk_ids": [],
+              "nodes": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

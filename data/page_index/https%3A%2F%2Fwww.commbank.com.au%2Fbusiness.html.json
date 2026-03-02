@@ -1,0 +1,324 @@
+{
+  "url": "https://www.commbank.com.au/business.html",
+  "title": "Business Banking - CommBank",
+  "summary": "A range of business banking products and services to help your business, whether you're a small business or large corporation.",
+  "nodes": [
+    {
+      "node_id": "0001",
+      "name": "Popular searches",
+      "summary": "Popular searches",
+      "content_preview": "",
+      "level": 3,
+      "chunk_ids": [
+        "17fd907bb9f6d92a",
+        "e87065001733c8ee",
+        "13380ae2be672bb7",
+        "377788297499bf31",
+        "795eec6580e08a6b"
+      ],
+      "nodes": []
+    },
+    {
+      "node_id": "0002",
+      "name": "Business banking",
+      "summary": "Open our award-winning Business Transaction Account 1 $0 monthly account fee option Apply online in minutes Winner of Mozo's Small Business Exceptional Everyday Account award 5 years in a row 1\nExplor",
+      "content_preview": "Open our award-winning Business Transaction Account 1 $0 monthly account fee option Apply online in minutes Winner of Mozo's Small Business Exceptional Everyday Account award 5 years in a row 1\nExplor",
+      "level": 1,
+      "chunk_ids": [
+        "b612654e5f8700d5"
+      ],
+      "nodes": []
+    },
+    {
+      "node_id": "0003",
+      "name": "Business banking",
+      "summary": "Business banking",
+      "content_preview": "",
+      "level": 1,
+      "chunk_ids": [
+        "b612654e5f8700d5"
+      ],
+      "nodes": [
+        {
+          "node_id": "0004",
+          "name": "Open our award-winning Business Transaction Account 1",
+          "summary": "$0 monthly account fee option Apply online in minutes Winner of Mozo's Small Business Exceptional Everyday Account award 5 years in a row 1",
+          "content_preview": "$0 monthly account fee option Apply online in minutes Winner of Mozo's Small Business Exceptional Everyday Account award 5 years in a row 1",
+          "level": 3,
+          "chunk_ids": [
+            "23fcf234b716f88b"
+          ],
+          "nodes": []
+        },
+        {
+          "node_id": "0005",
+          "name": "Products and services",
+          "summary": "Bank accounts Bank accounts Business Transaction Account Business Online Saver Savings & term deposits Explore bank accounts Merchant services & business payments Merchant services & business payments",
+          "content_preview": "Bank accounts Bank accounts Business Transaction Account Business Online Saver Savings & term deposits Explore bank accounts Merchant services & business payments Merchant services & business payments",
+          "level": 2,
+          "chunk_ids": [
+            "2001f4cf11c621f7"
+          ],
+          "nodes": [
+            {
+              "node_id": "0006",
+              "name": "Bank accounts",
+              "summary": "Bank accounts",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0007",
+              "name": "Bank accounts",
+              "summary": "Bank accounts",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0008",
+              "name": "Merchant services & business payments",
+              "summary": "Merchant services & business payments",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0009",
+              "name": "Merchant services & business payments",
+              "summary": "Merchant services & business payments",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0010",
+              "name": "Business loans & finance",
+              "summary": "Business loans & finance",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0011",
+              "name": "Business loans & finance",
+              "summary": "Business loans & finance",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0012",
+              "name": "Business cards",
+              "summary": "Business cards",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0013",
+              "name": "Business cards",
+              "summary": "Business cards",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0014",
+              "name": "International business payments",
+              "summary": "International business payments",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0015",
+              "name": "International business payments",
+              "summary": "International business payments",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0016",
+              "name": "For your industry",
+              "summary": "For your industry",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0017",
+              "name": "For your industry",
+              "summary": "For your industry",
+              "content_preview": "",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0018",
+          "name": "Start, run or grow your business with CommBank",
+          "summary": "Bank with the business bank that helps to keep your money safe, your doors open and your cash flow moving.\nAward-winning 1 Business Transaction Account with $0 monthly account fee option Access to Aus",
+          "content_preview": "Bank with the business bank that helps to keep your money safe, your doors open and your cash flow moving.\nAward-winning 1 Business Transaction Account with $0 monthly account fee option Access to Aus",
+          "level": 2,
+          "chunk_ids": [
+            "2e999605e92cc262"
+          ],
+          "nodes": []
+        },
+        {
+          "node_id": "0019",
+          "name": "Latest offers",
+          "summary": "Make the most of our exclusive deals and discounts , tailored for businesses just like yours.",
+          "content_preview": "Make the most of our exclusive deals and discounts , tailored for businesses just like yours.",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0020",
+              "name": "Eligible CommBank merchants can enjoy Doshii on the house ^1",
+              "summary": "Doshii are waiving subscription fees on plans for eligible CommBank merchants. Exclusive limited time offer.",
+              "content_preview": "Doshii are waiving subscription fees on plans for eligible CommBank merchants. Exclusive limited time offer.",
+              "level": 3,
+              "chunk_ids": [
+                "1815d46ef0ed6ad2"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0021",
+              "name": "Fast track your Business Overdraft application",
+              "summary": "Already a CommBank customer? Eligible existing customers may be conditionally approved for a Business Overdraft and get funds within minutes. ^^\nApply in under 10 minutes.",
+              "content_preview": "Already a CommBank customer? Eligible existing customers may be conditionally approved for a Business Overdraft and get funds within minutes. ^^\nApply in under 10 minutes.",
+              "level": 3,
+              "chunk_ids": [
+                "51e88781b77bfaeb"
+              ],
+              "nodes": []
+            },
+            {
+              "node_id": "0022",
+              "name": "Earn 4.25% p.a. on a 12 month term Business Investment Account",
+              "summary": "Make the most of your business savings with our standard Business Investment Account .\nOffer available from 23 January 2026 for a limited time only. §",
+              "content_preview": "Make the most of your business savings with our standard Business Investment Account .\nOffer available from 23 January 2026 for a limited time only. §",
+              "level": 3,
+              "chunk_ids": [
+                "b28f7ed338170935"
+              ],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0023",
+          "name": "Already a CommBank customer?",
+          "summary": "Save time by applying in NetBank. Don't have NetBank? Register now .\nOpen in NetBank",
+          "content_preview": "Save time by applying in NetBank. Don't have NetBank? Register now .\nOpen in NetBank",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0024",
+          "name": "New CommBank customer?",
+          "summary": "You'll need to set up your business with us before you can apply online.\nFind a branch",
+          "content_preview": "You'll need to set up your business with us before you can apply online.\nFind a branch",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0025",
+          "name": "Introducing Business Masterclass",
+          "summary": "Discover our series of practical learning modules across the topics that matter most to businesses. Upskill today, to tackle tomorrow.",
+          "content_preview": "Discover our series of practical learning modules across the topics that matter most to businesses. Upskill today, to tackle tomorrow.",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": []
+        },
+        {
+          "node_id": "0026",
+          "name": "Need help finding the right solutions for your business?",
+          "summary": "Our selector tool can help you in 3 simple steps: Answer a few questions about your business Compare and choose from our products and services View a summary of your choices and next steps Used this t",
+          "content_preview": "Our selector tool can help you in 3 simple steps: Answer a few questions about your business Compare and choose from our products and services View a summary of your choices and next steps Used this t",
+          "level": 2,
+          "chunk_ids": [
+            "c8d90fcead782031"
+          ],
+          "nodes": []
+        },
+        {
+          "node_id": "0027",
+          "name": "Support when you need it",
+          "summary": "FAQs & contact us Product support & contact information Message us or fast-track your call in the app Find your local business banker",
+          "content_preview": "FAQs & contact us Product support & contact information Message us or fast-track your call in the app Find your local business banker",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0028",
+              "name": "FAQs & contact us",
+              "summary": "Product support & contact information",
+              "content_preview": "Product support & contact information",
+              "level": 3,
+              "chunk_ids": [],
+              "nodes": []
+            }
+          ]
+        },
+        {
+          "node_id": "0029",
+          "name": "Things you should know",
+          "summary": "Things you should know",
+          "content_preview": "",
+          "level": 2,
+          "chunk_ids": [],
+          "nodes": [
+            {
+              "node_id": "0030",
+              "name": "QUICK LINKS",
+              "summary": "Security & scams Help & support Financial assistance Complaints & compliments Accessibility",
+              "content_preview": "Security & scams Help & support Financial assistance Complaints & compliments Accessibility",
+              "level": 4,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0031",
+              "name": "ABOUT US",
+              "summary": "About CommBank Careers at CommBank Sustainability Newsroom Investor centre",
+              "content_preview": "About CommBank Careers at CommBank Sustainability Newsroom Investor centre",
+              "level": 4,
+              "chunk_ids": [],
+              "nodes": []
+            },
+            {
+              "node_id": "0032",
+              "name": "IMPORTANT INFORMATION",
+              "summary": "Important documents Banking Code of Practice Cookies policy Privacy statement Modern Slavery Statement",
+              "content_preview": "Important documents Banking Code of Practice Cookies policy Privacy statement Modern Slavery Statement",
+              "level": 4,
+              "chunk_ids": [],
+              "nodes": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

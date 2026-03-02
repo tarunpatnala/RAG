@@ -1,0 +1,35 @@
+# Web scraping & content extraction
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+trafilatura>=1.12.0
+lxml>=5.1.0
+
+# Embeddings
+sentence-transformers>=3.0.0
+
+# Vector store
+chromadb>=0.5.0
+
+# LLM for PageIndex reasoning
+anthropic>=0.40.0
+
+# Data processing
+tiktoken>=0.7.0
+numpy>=1.26.0
+
+# Hashing & caching
+xxhash>=3.4.0
+
+# CLI & utilities
+rich>=13.7.0
+click>=8.1.0
+
+# Async support
+aiohttp>=3.9.0
+
+# Document export
+markdownify>=0.13.0
+
+# API server
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
