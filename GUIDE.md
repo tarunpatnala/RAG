@@ -21,15 +21,16 @@ This guide explains every part of a production-grade **Retrieval-Augmented Gener
 6. [Content Caching](#6-content-caching-cache_managerpycore)
 7. [Orphan Cleanup](#7-orphan-cleanup)
 8. [PageIndex - Hierarchical Tree Indexing](#8-pageindex---hierarchical-tree-indexing-page_indexpycore)
-9. [The Query Pipeline (Retrieval + Generation)](#9-the-query-pipeline-rag_enginepycore)
-10. [Retrieval Caching](#10-retrieval-caching-retrieval_cachepycore)
-11. [Search Schema JSON Output](#11-search-schema-json-output)
-12. [The Orchestrator](#12-the-orchestrator-pipelinepy)
-13. [The CLI Interface](#13-the-cli-interface-mainpy)
-14. [The REST API](#14-the-rest-api-apipy)
-15. [Configuration](#15-configuration-configpy)
-16. [Key Concepts Glossary](#16-key-concepts-glossary)
-17. [How to Run the System](#17-how-to-run-the-system)
+9. [BM25 Keyword Retrieval](#9-bm25-keyword-retrieval-bm25_indexpycore)
+10. [The Query Pipeline (Retrieval + Generation)](#10-the-query-pipeline-rag_enginepycore)
+11. [Retrieval Caching](#11-retrieval-caching-retrieval_cachepycore)
+12. [Search Schema JSON Output](#12-search-schema-json-output)
+13. [The Orchestrator](#13-the-orchestrator-pipelinepy)
+14. [The CLI Interface](#14-the-cli-interface-mainpy)
+15. [The REST API](#15-the-rest-api-apipy)
+16. [Configuration](#16-configuration-configpy)
+17. [Key Concepts Glossary](#17-key-concepts-glossary)
+18. [How to Run the System](#18-how-to-run-the-system)
 
 ---
 
@@ -87,8 +88,9 @@ User question --> Check retrieval cache (exact hash, then semantic similarity)
               --> On cache MISS:
                   --> Embed the question
                   --> Vector search (find similar chunks)
+                  --> BM25 keyword search (find term-matching chunks)
                   --> PageIndex reasoning (find relevant sections)
-                  --> Merge & re-rank results (dual scoring: raw + reranked)
+                  --> Three-way merge & re-rank (vector + BM25 + PageIndex)
                   --> Send to LLM with context
                   --> Store result in retrieval cache
                   --> Return answer with sources (optionally as JSON search schema)
@@ -107,16 +109,17 @@ Here's how all the components connect:
        +--------v---------+             +--------v---------+
        |   pipeline.py    |             |  rag_engine.py   |
        |  (Ingestion +    |             |  (Query: retrieve|
-       |   orphan cleanup)|             |  + cache + gen)  |
+       |   orphan cleanup |             |  + cache + gen)  |
+       |   + BM25 rebuild)|             |  (3-way merge)   |
        +--------+---------+             +--------+---------+
                 |                                |
-  +------+-----+----+-----+-----+       +------+------+-------+
-  |      |     |    |     |     |       |      |      |       |
-+-v---+ +v--+ +v--+ +v-+ +v--+ +v---+ +v----+ +v--+ +v-----+ +v--------+
-|scrap| |doc| |chu| |em| |vec| |page| |retr | |vec| |page  | |retrieval|
-|er   | |pro| |nk | |be| |sto| |idx | |cache| |sto| |index | |cache    |
-|.py  | |.py| |.py| |d | |re | |.py | |.py  | |re | |.py   | |.py      |
-+-----+ +---+ +---+ |.p| |.py| +----+ +-----+ |.py| +------+ +---------+
+  +------+-----+----+-----+------+       +------+------+------+-------+
+  |      |     |    |     |      |       |      |      |      |       |
++-v---+ +v--+ +v--+ +v-+ +v--+ +v---+ +v----+ +v--+ +v---+ +v-----+ +v--------+
+|scrap| |doc| |chu| |em| |vec| |page| |bm25 | |vec| |bm25| |page  | |retrieval|
+|er   | |pro| |nk | |be| |sto| |idx | |index| |sto| |idx | |index | |cache    |
+|.py  | |.py| |.py| |d | |re | |.py | |.py  | |re | |.py | |.py   | |.py      |
++-----+ +---+ +---+ |.p| |.py| +----+ +-----+ |.py| +----+ +------+ +---------+
                      +--+ +---+                 +---+
 ```
 
@@ -142,6 +145,7 @@ RAG/
 │   │   ├── chunker.py               # Splits documents into small pieces
 │   │   ├── embeddings.py            # Converts text into number vectors
 │   │   ├── page_index.py            # Builds hierarchical document trees
+│   │   ├── bm25_index.py            # BM25 keyword retrieval index
 │   │   ├── rag_engine.py            # The query engine - retrieval + generation
 │   │   ├── retrieval_cache.py       # Two-tier semantic query cache
 │   │   └── cache_manager.py         # Avoids re-processing unchanged content
@@ -153,7 +157,8 @@ RAG/
     ├── cache/                       # Cached web content + retrieval cache SQLite DBs
     ├── documents/                   # Structured Markdown documents
     ├── chroma_db/                   # ChromaDB persistent vector storage
-    └── page_index/                  # Hierarchical tree indexes (JSON)
+    ├── page_index/                  # Hierarchical tree indexes (JSON)
+    └── bm25_index/                  # BM25 keyword index (pickle)
 ```
 
 ---
@@ -550,9 +555,100 @@ The RAG engine uses **both** and merges results (see next section).
 
 ---
 
-## 9. The Query Pipeline (`rag_engine.py`/core)
+## 9. BM25 Keyword Retrieval (`bm25_index.py`/core)
 
-**What it does:** Takes a user's question, retrieves relevant information from both vector search and PageIndex, merges the results, and generates an answer. It also integrates a retrieval cache to skip expensive work for repeated or semantically similar queries.
+**What it does:** Provides a term-frequency-based keyword search as a third retrieval path alongside vector search and PageIndex reasoning.
+
+**Why it's needed:** Dense vector embeddings capture semantic meaning but can miss exact keyword matches. Product names, acronyms, specific codes, and technical terms often score poorly in vector search because the embedding model doesn't recognise them. BM25 excels at these exact-match scenarios because it scores documents based on how many query terms they contain and how rare those terms are across the corpus.
+
+### How BM25 Works
+
+BM25 (Best Match 25) is a classic information retrieval algorithm that scores how well a document matches a query based on three factors:
+
+1. **Term Frequency (TF)** — How many times the query term appears in the document. More occurrences = higher score, but with diminishing returns (controlled by `k1=1.5`).
+
+2. **Inverse Document Frequency (IDF)** — How rare the term is across all documents. Rare terms (like "conveyancing") contribute more than common terms (like "loan").
+
+3. **Document Length Normalization** — Longer documents are penalised slightly so they don't dominate just because they contain more words (controlled by `b=0.75`).
+
+```
+Example:
+
+Query: "home loan redraw facility"
+
+Document A: "What is a home loan redraw facility?"
+  → High BM25 score (all query terms present, short document)
+
+Document B: "Apply for a home loan online..."
+  → Lower BM25 score (only "home" and "loan" present, missing "redraw" and "facility")
+
+Document C: "Credit card annual fee comparison"
+  → Score = 0 (no query terms present)
+```
+
+### Why This Complements Vector Search
+
+| Aspect | Vector Search | BM25 |
+|---|---|---|
+| How it matches | Semantic similarity (meaning) | Exact term presence (keywords) |
+| Strengths | "mortgage" matches "home loan" | "LVR" matches "LVR" exactly |
+| Weaknesses | May miss exact terms/acronyms | Misses synonyms and paraphrasing |
+| Score range | 0.0 - 1.0 (cosine similarity) | 0.0 - unbounded (normalised to 0-1 before merging) |
+
+Together, vector search catches semantic intent while BM25 catches exact terminology — a combination known as **hybrid retrieval**.
+
+### Implementation Details
+
+#### Tokenization
+
+The system uses a lightweight custom tokenizer (no external NLP libraries):
+- Converts text to lowercase
+- Strips punctuation
+- Removes common English stop words (130+ words like "the", "is", "and")
+- Discards single-character tokens
+
+This is sufficient for the financial products domain and avoids heavy dependencies like nltk or spacy.
+
+#### Index Building (during ingestion)
+
+After all URLs are processed and orphans cleaned up, the pipeline rebuilds a **global BM25 index** from all chunks in the vector store:
+
+```
+[per-URL ingestion loop]
+  Fetch → Process → Chunk → Embed → Store → PageIndex
+[orphan cleanup]
+[BM25 index rebuild]  ← Reads ALL chunks, tokenizes, builds BM25Okapi
+```
+
+The index is global (not per-URL) because BM25's IDF calculation needs the full corpus to determine which terms are genuinely rare. Per-URL indexes would have too few documents (~10-30 chunks) for statistically meaningful IDF values.
+
+#### Persistence
+
+The BM25 index is serialised to disk via Python's `pickle` at `data/bm25_index/bm25_index.pkl`. It loads automatically on startup and is rebuilt during each ingestion that processes or removes URLs.
+
+#### BM25 Score Normalization
+
+Raw BM25 scores are unbounded (they depend on corpus size and term frequencies). Before merging with other retrievers, scores are **max-normalised** to [0, 1]:
+
+```
+normalised_score = raw_score / max_score_in_result_set
+```
+
+This means the top BM25 result always gets a score of 1.0, making it comparable with vector similarity scores (also 0-1) and PageIndex rank scores.
+
+### Configuration
+
+| Setting | Default | What it controls |
+|---|---|---|
+| `bm25.k1` | 1.5 | Term frequency saturation. Higher = more credit for repeated terms |
+| `bm25.b` | 0.75 | Document length normalization. 0 = no penalty for long docs, 1 = full penalty |
+| `bm25.enabled` | True | Master toggle for BM25 retrieval |
+
+---
+
+## 10. The Query Pipeline (`rag_engine.py`/core)
+
+**What it does:** Takes a user's question, retrieves relevant information from three sources (vector search, BM25 keyword search, and PageIndex reasoning), merges the results with a weighted three-way formula, and generates an answer. It also integrates a retrieval cache to skip expensive work for repeated or semantically similar queries.
 
 **This is the heart of the RAG system.**
 
@@ -570,49 +666,66 @@ Question: "What home loan options does CommBank offer?"
 [1. Embed the question]
     |  --> [0.25, -0.43, 0.11, ...]  (384-dimensional vector)
     v
-[2. Vector Search]                    [3. PageIndex Reasoning]
-    |  ChromaDB cosine search              |  Navigate tree structure
-    |  Returns top-K similar chunks        |  Returns relevant node chunk IDs
-    v                                      v
-[4. Merge & Re-rank]
-    |  Vector score (60% weight) + PageIndex score (40% weight)
+[2. Vector Search]        [3. BM25 Search]          [4. PageIndex Reasoning]
+    |  ChromaDB cosine        |  Term-frequency           |  Navigate tree
+    |  search                 |  scoring against           |  structure
+    |  Returns top-K          |  all chunks               |  Returns relevant
+    |  similar chunks         |  Returns keyword           |  node chunk IDs
+    v                         v  matches                   v
+[5. Three-Way Merge & Re-rank]
+    |  Vector (40%) + BM25 (35%) + PageIndex (25%)
+    |  Weights auto-redistribute when any retriever is disabled
     |  Both raw and reranked scores are preserved
     v
-[5. Build context]
+[6. Build context]
     |  Format top results as numbered sources
     v
-[6. Generate answer]
+[7. Generate answer]
     |  Send question + context to Claude
     v
-[7. Store in retrieval cache]
+[8. Store in retrieval cache]
     |  Save response keyed by query hash + embedding
     v
 [Final Answer with source citations]
 ```
 
-### Dual Scoring
+### Three-Way Scoring
 
 Every retrieval result carries **two scores**:
 
 | Score | Field | What it measures |
 |---|---|---|
-| **Vector score** | `score` / `@search.score` | Raw cosine similarity from ChromaDB (1 - distance). 0.0 for PageIndex-only results. |
-| **Reranker score** | `reranker_score` / `@search.rerankerScore` | Combined score after merging vector and PageIndex results. This is what results are sorted by. |
+| **Vector score** | `score` / `@search.score` | Raw cosine similarity from ChromaDB (1 - distance). 0.0 for non-vector results. |
+| **Reranker score** | `reranker_score` / `@search.rerankerScore` | Combined score after three-way merge. This is what results are sorted by. |
 
 The reranker formula:
 ```
-reranker_score = 0.6 * vector_score + 0.4 * pageindex_score
+reranker_score = 0.40 * vector_score + 0.35 * bm25_score + 0.25 * pageindex_score
 ```
 
 - **Vector score** is derived from cosine similarity (1 - distance)
+- **BM25 score** is max-normalised to [0, 1] (top BM25 hit = 1.0)
 - **PageIndex score** is based on the rank position from the reasoner (1.0 for rank 1, decreasing by 0.05 per rank)
 
-Each result is tagged with its source:
-- `"vector"` - Found only by vector search
-- `"page_index"` - Found only by PageIndex
-- `"both"` - Found by both methods (usually the highest quality)
+#### Dynamic Weight Redistribution
 
-Results found by "both" methods tend to have the highest reranker scores because they receive contributions from both scoring paths.
+When a retriever is disabled (via `--no-bm25` or `--no-page-index`), its weight is automatically redistributed so the remaining weights sum to 1.0:
+
+| Active Retrievers | Vector | BM25 | PageIndex |
+|---|---|---|---|
+| All three | 0.40 | 0.35 | 0.25 |
+| Vector + BM25 (no PageIndex) | 0.533 | 0.467 | 0.0 |
+| Vector + PageIndex (no BM25) | 0.615 | 0.0 | 0.385 |
+| Vector only | 1.0 | 0.0 | 0.0 |
+
+Each result is tagged with its source(s) as a `+`-joined label:
+- `"vector"` — found only by vector search
+- `"bm25"` — found only by BM25
+- `"page_index"` — found only by PageIndex
+- `"vector+bm25"` — found by vector and BM25
+- `"vector+bm25+page_index"` — found by all three methods (usually the highest quality)
+
+Results found by multiple retrievers tend to have the highest reranker scores because they receive contributions from multiple scoring paths.
 
 ### Answer Generation
 
@@ -626,7 +739,7 @@ Without an API key, the raw retrieved context is returned as-is.
 
 ---
 
-## 10. Retrieval Caching (`retrieval_cache.py`/core)
+## 11. Retrieval Caching (`retrieval_cache.py`/core)
 
 **What it does:** Caches query results so that repeated or semantically similar questions return instantly without re-running vector search, PageIndex reasoning, or LLM generation.
 
@@ -715,7 +828,7 @@ python main.py clear --query-cache --yes
 
 ---
 
-## 11. Search Schema JSON Output
+## 12. Search Schema JSON Output
 
 **What it does:** The `--json` flag on the `query` command outputs retrieval results in a structured JSON format modelled after Azure AI Search's response schema.
 
@@ -755,8 +868,8 @@ python main.py clear --query-cache --yes
 | `@search.answers[].text` | The generated answer text |
 | `@search.answers[].score` | Score of the top source used for generation |
 | `value` | Array of retrieved chunks, ordered by reranker score |
-| `@search.score` | Raw vector similarity score (0.0 for PageIndex-only results) |
-| `@search.rerankerScore` | Combined score after hybrid reranking (vector 60% + PageIndex 40%) |
+| `@search.score` | Raw vector similarity score (0.0 for non-vector results) |
+| `@search.rerankerScore` | Combined score after three-way hybrid reranking (vector 40% + BM25 35% + PageIndex 25%) |
 | `Content` | The chunk text, including section context prefix |
 | `sourcefile` | Filename derived from the source URL (e.g., `home-loans.html`) |
 | `doc_url` | Full source URL |
@@ -773,7 +886,7 @@ python main.py query "What are the home loan options?" --json
 
 ---
 
-## 12. The Orchestrator (`pipeline.py`)
+## 13. The Orchestrator (`pipeline.py`)
 
 **What it does:** Coordinates all the components in the correct order for the ingestion pipeline, including orphan cleanup at the end.
 
@@ -794,13 +907,15 @@ Step 8: Cache update   --> Save content hash and HTTP metadata
 
 If the URL hasn't changed (detected at Step 1 or Step 2), it short-circuits and skips steps 3-8.
 
-After all URLs are processed, the pipeline runs **orphan cleanup** (see Section 7) to remove data for any URLs that were previously ingested but are no longer in the current list.
+After all URLs are processed, the pipeline runs two global steps:
+1. **Orphan cleanup** (see Section 7) — removes data for URLs no longer in the active list
+2. **BM25 index rebuild** (see Section 9) — reads all chunks from the vector store and builds a fresh global BM25 keyword index. This only runs when URLs were actually processed or removed.
 
 The pipeline uses **Rich** for progress bars and formatted console output, so you can see what's happening in real-time.
 
 ---
 
-## 13. The CLI Interface (`main.py`)
+## 14. The CLI Interface (`main.py`)
 
 **What it does:** Provides the user-facing commands to operate the system.
 
@@ -839,6 +954,9 @@ python main.py query "loan features" -k 5
 # Search only one URL
 python main.py query "rates" --url-filter "https://www.commbank.com.au/home-loans.html"
 
+# Disable BM25 keyword retrieval (vector + PageIndex only)
+python main.py query "loan features" --no-bm25
+
 # Bypass retrieval cache (force fresh retrieval)
 python main.py query "loan features" --no-cache
 
@@ -849,14 +967,14 @@ python main.py query "What are the home loan options?" --json
 python main.py query "What are the home loan options?" --json --no-generate
 ```
 
-The default table view shows both **Score** (raw vector similarity) and **Reranked** (combined after PageIndex merge) columns. When using `--json`, the output follows the search schema described in Section 11.
+The default table view shows both **Score** (raw vector similarity) and **Reranked** (combined after three-way merge) columns. When using `--json`, the output follows the search schema described in Section 12.
 
 #### `status` - Check system state
 ```bash
 python main.py status
 ```
 
-Shows: vector store chunk count, PageIndex document count, embedding model details, LLM model, API key status, retrieval cache entries/hits, semantic threshold, and cache TTL.
+Shows: vector store chunk count, BM25 index chunk count, PageIndex document count, embedding model details, LLM model, API key status, retrieval cache entries/hits, semantic threshold, and cache TTL.
 
 #### `clear` - Remove data
 ```bash
@@ -868,7 +986,7 @@ python main.py clear --all --yes           # Clear everything
 
 ---
 
-## 14. The REST API (`api.py`)
+## 15. The REST API (`api.py`)
 
 **What it does:** Provides an HTTP API for all RAG operations, allowing frontends, services, or tools like `curl` to interact with the system over the network.
 
@@ -942,7 +1060,7 @@ curl -X POST http://localhost:8000/query \
 curl "http://localhost:8000/query?question=What+credit+cards+are+available&top_k=3"
 ```
 
-Both query endpoints return the same response: the answer, ranked sources with dual scores, timing, cache hit status, and the full `search_schema` (Azure AI Search format).
+Both query endpoints accept a `use_bm25` parameter (default `true`) to enable or disable BM25 keyword retrieval. They return the same response: the answer, ranked sources with three-way scores, timing, cache hit status, and the full `search_schema` (Azure AI Search format).
 
 #### `POST /ingest` — Trigger Ingestion (Background)
 ```bash
@@ -983,7 +1101,7 @@ All synchronous RAG operations (embedding, ChromaDB search, LLM calls) run in a 
 
 ---
 
-## 15. Configuration (`config.py`)
+## 16. Configuration (`config.py`)
 
 **What it does:** Centralises all settings using Python dataclasses with sensible defaults.
 
@@ -1027,6 +1145,14 @@ All synchronous RAG operations (embedding, ChromaDB search, LLM calls) run in a 
 | `ttl_seconds` | 86,400 (24h) | How long cache entries remain valid before expiring |
 | `max_entries` | 1,000 | Maximum number of cached queries. Oldest entries evicted when exceeded |
 
+#### BM25 Settings (`BM25Config`)
+
+| Setting | Default | What it controls |
+|---|---|---|
+| `k1` | 1.5 | Term frequency saturation. Higher values give more weight to repeated query terms |
+| `b` | 0.75 | Document length normalization. 0 = no penalty for long documents, 1 = full penalty |
+| `enabled` | True | Master toggle for BM25 keyword retrieval |
+
 ### Environment variables:
 
 | Variable | Purpose |
@@ -1035,7 +1161,7 @@ All synchronous RAG operations (embedding, ChromaDB search, LLM calls) run in a 
 
 ---
 
-## 16. Key Concepts Glossary
+## 17. Key Concepts Glossary
 
 | Term | Definition |
 |---|---|
@@ -1047,8 +1173,11 @@ All synchronous RAG operations (embedding, ChromaDB search, LLM calls) run in a 
 | **Chunk** | A small piece of a document (typically 512 tokens) that can be individually embedded and searched. |
 | **Token** | The basic unit an LLM processes. Roughly 3/4 of a word. "Commonwealth Bank" = ~3 tokens. |
 | **PageIndex** | A hierarchical tree structure (like a table of contents) that enables structured navigation of documents. Inspired by VectifyAI's PageIndex framework. |
-| **Hybrid Retrieval** | Using multiple retrieval methods (vector search + PageIndex) and merging their results for better accuracy. |
-| **Reranking** | A second scoring pass that combines vector scores with PageIndex scores to produce a final ranking. The `reranker_score` uses a 60/40 weighted blend. |
+| **BM25** | Best Match 25. A term-frequency-based retrieval algorithm that scores documents by how many query terms they contain and how rare those terms are (IDF). Complements vector search for exact keyword matching. |
+| **Hybrid Retrieval** | Using multiple retrieval methods (vector search + BM25 + PageIndex) and merging their results for better accuracy. This system uses a three-way hybrid. |
+| **Reranking** | A second scoring pass that combines scores from all three retrievers to produce a final ranking. The `reranker_score` uses a weighted formula: 40% vector + 35% BM25 + 25% PageIndex. |
+| **Max-Normalization** | Scaling raw scores so the highest score becomes 1.0. Used to bring BM25's unbounded scores into the [0, 1] range for merging with other retrievers. |
+| **TF-IDF** | Term Frequency-Inverse Document Frequency. The core principle behind BM25: terms that appear often in a document but rarely across the corpus are the most informative. |
 | **Conditional GET** | An HTTP technique where the server only sends content if it has changed, saving bandwidth. Uses ETag and Last-Modified headers. |
 | **Content Hash** | A digital fingerprint of content. If two pages produce the same hash, their content is identical. Uses xxHash128. |
 | **Content Fingerprint** | A store-level hash derived from all content hashes in the vector store. Used by the retrieval cache to detect when underlying data has changed. |
@@ -1066,7 +1195,7 @@ All synchronous RAG operations (embedding, ChromaDB search, LLM calls) run in a 
 
 ---
 
-## 17. How to Run the System
+## 18. How to Run the System
 
 ### Prerequisites
 
@@ -1131,7 +1260,7 @@ Everything works except:
 - PageIndex query reasoning uses keyword matching instead of LLM reasoning
 - Queries return raw retrieved context instead of a generated answer
 
-The vector search, content caching, retrieval caching, orphan cleanup, chunking, embedding, and JSON schema output all work fully without an API key.
+The vector search, BM25 keyword retrieval, content caching, retrieval caching, orphan cleanup, chunking, embedding, and JSON schema output all work fully without an API key.
 
 ---
 
@@ -1145,11 +1274,12 @@ This RAG system follows a clean, layered architecture:
 4. **Embed** chunks into 384-dimensional vectors
 5. **Store** in ChromaDB for persistent, searchable vector storage
 6. **Index** with PageIndex hierarchical trees for structured navigation
-7. **Cache content** hashes and HTTP metadata to skip unchanged URLs
-8. **Clean up orphans** automatically when URLs are removed from the ingestion list
-9. **Query** with hybrid retrieval (vector + PageIndex), dual scoring (raw + reranked), and LLM generation
-10. **Cache queries** with two-tier retrieval cache (exact hash + semantic similarity)
-11. **Output** in standardised search schema JSON format for API integration
-12. **Serve** via FastAPI REST API with Swagger UI, background ingestion, and thread-safe concurrency
+7. **Index** with BM25 keyword index for exact term matching
+8. **Cache content** hashes and HTTP metadata to skip unchanged URLs
+9. **Clean up orphans** automatically when URLs are removed from the ingestion list
+10. **Query** with three-way hybrid retrieval (vector + BM25 + PageIndex), weighted scoring (40/35/25), and LLM generation
+11. **Cache queries** with two-tier retrieval cache (exact hash + semantic similarity)
+12. **Output** in standardised search schema JSON format for API integration
+13. **Serve** via FastAPI REST API with Swagger UI, background ingestion, and thread-safe concurrency
 
 Each component is modular, testable, and replaceable. The system is designed to be production-ready with proper error handling, progress tracking, configurable settings, and two entry points: a CLI for terminal use and a REST API for service integration.

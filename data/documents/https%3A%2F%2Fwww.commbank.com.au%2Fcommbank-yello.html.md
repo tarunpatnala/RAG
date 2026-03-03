@@ -2,7 +2,7 @@
 url: https://www.commbank.com.au/commbank-yello.html
 title: "CommBank Yello"
 content_hash: d3c996c5a187ab11a58ee7f6e58d308e
-fetched_at: 1772482921.254823
+fetched_at: 1772534841.7118359
 ---
 
 # CommBank Yello

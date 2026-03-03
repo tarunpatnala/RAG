@@ -143,6 +143,7 @@ def ingest(urls: tuple[str, ...], force: bool) -> None:
 @click.option("--top-k", "-k", default=8, help="Number of chunks to retrieve.")
 @click.option("--url-filter", help="Restrict search to a specific source URL.")
 @click.option("--no-page-index", is_flag=True, help="Disable PageIndex reasoning.")
+@click.option("--no-bm25", is_flag=True, help="Disable BM25 keyword retrieval.")
 @click.option("--no-generate", is_flag=True, help="Return raw context without LLM generation.")
 @click.option("--no-cache", is_flag=True, help="Bypass retrieval cache (force fresh retrieval).")
 @click.option("--json", "output_json", is_flag=True, help="Output results in search schema JSON.")
@@ -152,6 +153,7 @@ def query(
     top_k: int,
     url_filter: str | None,
     no_page_index: bool,
+    no_bm25: bool,
     no_generate: bool,
     no_cache: bool,
     output_json: bool,
@@ -167,6 +169,7 @@ def query(
         embedder=pipeline.embedder,
         vector_store=pipeline.vector_store,
         page_trees=page_trees,
+        bm25_index=pipeline.bm25_index,
     )
 
     store_count = pipeline.vector_store.count
@@ -176,8 +179,10 @@ def query(
         return
 
     cache_stats = engine.retrieval_cache.stats()
+    bm25_count = pipeline.bm25_index.count
     console.print(
         f"[dim]Vector store: {store_count} chunks | "
+        f"BM25 index: {bm25_count} chunks | "
         f"PageIndex: {len(page_trees)} documents | "
         f"Query cache: {cache_stats['total_entries']} entries, "
         f"{cache_stats['total_hits']} hits[/dim]"
@@ -190,6 +195,7 @@ def query(
             top_k=top_k,
             url_filter=url_filter,
             use_page_index=not no_page_index,
+            use_bm25=not no_bm25,
             generate_answer=not no_generate,
             use_cache=not no_cache,
         )
@@ -272,6 +278,7 @@ def status() -> None:
     table.add_column("Detail", style="green")
 
     table.add_row("Vector store chunks", str(pipeline.vector_store.count))
+    table.add_row("BM25 index chunks", str(pipeline.bm25_index.count))
     table.add_row("PageIndex documents", str(len(pipeline.load_page_trees())))
     table.add_row("Embedding model", config.embedding.model_name)
     table.add_row("Embedding dimension", str(config.embedding.dimension))

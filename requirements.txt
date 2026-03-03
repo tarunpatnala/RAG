@@ -17,6 +17,9 @@ anthropic>=0.40.0
 tiktoken>=0.7.0
 numpy>=1.26.0
 
+# BM25 keyword retrieval
+rank-bm25>=0.2.2
+
 # Hashing & caching
 xxhash>=3.4.0
 

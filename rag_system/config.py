@@ -83,6 +83,15 @@ class RetrievalCacheConfig:
 
 
 @dataclass
+class BM25Config:
+    """BM25 keyword retrieval settings."""
+    index_dir: str = str(_project_root() / "data" / "bm25_index")
+    k1: float = 1.5       # term frequency saturation
+    b: float = 0.75       # document length normalization (0=none, 1=full)
+    enabled: bool = True   # master toggle
+
+
+@dataclass
 class RAGConfig:
     """Top-level configuration aggregating all sub-configs."""
     scraper: ScraperConfig = field(default_factory=ScraperConfig)
@@ -92,6 +101,7 @@ class RAGConfig:
     cache: CacheConfig = field(default_factory=CacheConfig)
     page_index: PageIndexConfig = field(default_factory=PageIndexConfig)
     retrieval_cache: RetrievalCacheConfig = field(default_factory=RetrievalCacheConfig)
+    bm25: BM25Config = field(default_factory=BM25Config)
 
     # LLM key – read from env
     anthropic_api_key: Optional[str] = field(

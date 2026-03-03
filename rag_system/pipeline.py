@@ -14,6 +14,7 @@ from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
 
 from rag_system.config import RAGConfig
+from rag_system.core.bm25_index import BM25Index
 from rag_system.core.cache_manager import CacheManager
 from rag_system.core.chunker import Chunk, SemanticChunker
 from rag_system.core.document_processor import DocumentProcessor, StructuredDocument
@@ -54,6 +55,7 @@ class IngestionPipeline:
         self._page_index_builder = PageIndexBuilder(
             config.page_index, api_key=config.anthropic_api_key
         )
+        self._bm25_index = BM25Index(config.bm25)
 
     def ingest(self, urls: list[str], force: bool = False) -> IngestionStats:
         """Ingest a list of URLs.
@@ -96,6 +98,10 @@ class IngestionPipeline:
 
         # ── Orphan cleanup: remove data for URLs no longer in the list ──
         self._cleanup_removed_urls(urls, stats)
+
+        # ── Rebuild global BM25 index from all chunks ──────────────────
+        if stats.urls_processed > 0 or stats.urls_removed > 0:
+            self._rebuild_bm25_index()
 
         stats.duration_seconds = time.perf_counter() - t_start
         return stats
@@ -224,6 +230,35 @@ class IngestionPipeline:
             return detail
 
     # ------------------------------------------------------------------
+    # BM25 index rebuild
+    # ------------------------------------------------------------------
+    def _rebuild_bm25_index(self) -> None:
+        """Rebuild the global BM25 index from all chunks in the vector store."""
+        console.print("  [cyan]Rebuilding BM25 index...[/cyan]")
+        total = self._store.count
+        if total == 0:
+            self._bm25_index.delete()
+            return
+
+        # Fetch all chunks from vector store
+        result = self._store._collection.get(
+            limit=total,
+            include=["documents", "metadatas"],
+        )
+
+        chunks: list[Chunk] = []
+        for i in range(len(result["ids"])):
+            chunks.append(Chunk(
+                chunk_id=result["ids"][i],
+                text=result["documents"][i] if result["documents"] else "",
+                token_count=0,  # not needed for BM25
+                metadata=result["metadatas"][i] if result["metadatas"] else {},
+            ))
+
+        self._bm25_index.build_from_chunks(chunks)
+        console.print(f"  [green]BM25 index rebuilt: {len(chunks)} chunks[/green]")
+
+    # ------------------------------------------------------------------
     # Accessors for the query engine
     # ------------------------------------------------------------------
     @property
@@ -233,6 +268,10 @@ class IngestionPipeline:
     @property
     def vector_store(self) -> VectorStore:
         return self._store
+
+    @property
+    def bm25_index(self) -> BM25Index:
+        return self._bm25_index
 
     def load_page_trees(self) -> list[PageTree]:
         return self._page_index_builder.load_all()

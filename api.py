@@ -62,6 +62,9 @@ class QueryRequest(BaseModel):
     use_page_index: bool = Field(
         default=True, description="Enable PageIndex reasoning"
     )
+    use_bm25: bool = Field(
+        default=True, description="Enable BM25 keyword retrieval"
+    )
     generate_answer: bool = Field(
         default=True,
         description="Generate LLM answer (False = raw context only)",
@@ -111,7 +114,7 @@ class SourceResult(BaseModel):
     reranker_score: float = Field(
         description="Combined score after hybrid reranking"
     )
-    source: str = Field(description="vector | page_index | both")
+    source: str = Field(description="Retrieval source(s): vector, bm25, page_index, or combinations like vector+bm25+page_index")
     source_url: str
     section_heading: str
 
@@ -171,6 +174,7 @@ class SystemStatus(BaseModel):
     """Response from /status."""
 
     vector_store_chunks: int
+    bm25_index_chunks: int
     page_index_documents: int
     indexed_urls: list[str]
     embedding_model: str
@@ -224,6 +228,7 @@ class AppState:
             embedder=self.pipeline.embedder,
             vector_store=self.pipeline.vector_store,
             page_trees=page_trees,
+            bm25_index=self.pipeline.bm25_index,
         )
 
 
@@ -312,6 +317,7 @@ async def system_status():
 
     return SystemStatus(
         vector_store_chunks=state.pipeline.vector_store.count,
+        bm25_index_chunks=state.pipeline.bm25_index.count,
         page_index_documents=len(state.pipeline.load_page_trees()),
         indexed_urls=indexed_urls,
         embedding_model=state.config.embedding.model_name,
@@ -339,6 +345,7 @@ async def _execute_query(
     top_k: int = 8,
     url_filter: Optional[str] = None,
     use_page_index: bool = True,
+    use_bm25: bool = True,
     generate_answer: bool = True,
     use_cache: bool = True,
 ) -> QueryResponse:
@@ -359,6 +366,7 @@ async def _execute_query(
         top_k=top_k,
         url_filter=url_filter,
         use_page_index=use_page_index,
+        use_bm25=use_bm25,
         generate_answer=generate_answer,
         use_cache=use_cache,
     )
@@ -403,6 +411,7 @@ async def query_post(request: QueryRequest):
         top_k=request.top_k,
         url_filter=request.url_filter,
         use_page_index=request.use_page_index,
+        use_bm25=request.use_bm25,
         generate_answer=request.generate_answer,
         use_cache=request.use_cache,
     )
@@ -416,6 +425,7 @@ async def query_get(
     top_k: int = Query(default=8, ge=1, le=50),
     url_filter: Optional[str] = Query(default=None),
     use_page_index: bool = Query(default=True),
+    use_bm25: bool = Query(default=True),
     generate_answer: bool = Query(default=True),
     use_cache: bool = Query(default=True),
 ):
@@ -425,6 +435,7 @@ async def query_get(
         top_k=top_k,
         url_filter=url_filter,
         use_page_index=use_page_index,
+        use_bm25=use_bm25,
         generate_answer=generate_answer,
         use_cache=use_cache,
     )

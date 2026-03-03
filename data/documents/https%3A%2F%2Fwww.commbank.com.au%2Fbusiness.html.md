@@ -2,7 +2,7 @@
 url: https://www.commbank.com.au/business.html
 title: "Business Banking - CommBank"
 content_hash: 22b17c8d1a98402b473ab9198e82cab1
-fetched_at: 1772482921.5630012
+fetched_at: 1772534842.2978392
 ---
 
 # Business Banking - CommBank

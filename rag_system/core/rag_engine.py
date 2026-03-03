@@ -1,13 +1,14 @@
-"""RAG Query Engine — hybrid retrieval combining vector search + PageIndex reasoning.
+"""RAG Query Engine — hybrid retrieval combining vector search + BM25 + PageIndex.
 
 Pipeline:
   1. Check retrieval cache (exact match, then semantic similarity)
   2. On cache miss:
      a. Embed the user query
      b. Vector search (semantic similarity via ChromaDB)
-     c. PageIndex reasoning (structured tree navigation)
-     d. Merge & re-rank results from both paths
-     e. Send to LLM with context
+     c. BM25 keyword search (term-frequency scoring)
+     d. PageIndex reasoning (structured tree navigation)
+     e. Three-way merge & re-rank results
+     f. Send to LLM with context
   3. Store result in retrieval cache
   4. Return answer with sources and cache-hit metadata
 """
@@ -23,6 +24,7 @@ from typing import Optional
 import anthropic
 
 from rag_system.config import RAGConfig
+from rag_system.core.bm25_index import BM25Index
 from rag_system.core.embeddings import EmbeddingGenerator
 from rag_system.core.page_index import PageIndexReasoner, PageTree
 from rag_system.core.retrieval_cache import RetrievalCache
@@ -111,11 +113,13 @@ class RAGEngine:
         embedder: EmbeddingGenerator,
         vector_store: VectorStore,
         page_trees: list[PageTree],
+        bm25_index: Optional[BM25Index] = None,
     ) -> None:
         self._cfg = config
         self._embedder = embedder
         self._store = vector_store
         self._trees = page_trees
+        self._bm25 = bm25_index
 
         self._reasoner: Optional[PageIndexReasoner] = None
         if page_trees:
@@ -141,6 +145,7 @@ class RAGEngine:
         top_k: int = 10,
         url_filter: Optional[str] = None,
         use_page_index: bool = True,
+        use_bm25: bool = True,
         generate_answer: bool = True,
         use_cache: bool = True,
     ) -> RAGResponse:
@@ -185,7 +190,8 @@ class RAGEngine:
         # ── 1. Retrieve ──────────────────────────────────────────────
         retrieval_results = self._retrieve(
             question, query_embedding=query_embedding,
-            top_k=top_k, url_filter=url_filter, use_page_index=use_page_index,
+            top_k=top_k, url_filter=url_filter,
+            use_page_index=use_page_index, use_bm25=use_bm25,
         )
         t_retrieval = time.perf_counter()
 
@@ -221,7 +227,7 @@ class RAGEngine:
         return response
 
     # ------------------------------------------------------------------
-    # Retrieval: merge vector + PageIndex
+    # Retrieval: merge vector + BM25 + PageIndex
     # ------------------------------------------------------------------
     def _retrieve(
         self,
@@ -230,6 +236,7 @@ class RAGEngine:
         top_k: int,
         url_filter: Optional[str],
         use_page_index: bool,
+        use_bm25: bool,
     ) -> list[RetrievalResult]:
         # ── Vector search ─────────────────────────────────────────────
         if url_filter:
@@ -249,6 +256,17 @@ class RAGEngine:
                 metadata=hit["metadata"],
             )
 
+        # ── BM25 keyword search ───────────────────────────────────────
+        bm25_map: dict[str, float] = {}
+        if use_bm25 and self._bm25 and self._bm25.is_ready:
+            bm25_hits = self._bm25.search(query, top_k=top_k, url_filter=url_filter)
+            if bm25_hits:
+                # Max-normalise BM25 scores to [0, 1]
+                max_score = max(h["score"] for h in bm25_hits)
+                for hit in bm25_hits:
+                    norm = hit["score"] / max_score if max_score > 0 else 0.0
+                    bm25_map[hit["id"]] = norm
+
         # ── PageIndex reasoning ───────────────────────────────────────
         pi_map: dict[str, float] = {}
         if use_page_index and self._reasoner and self._trees:
@@ -259,49 +277,73 @@ class RAGEngine:
             for rank, cid in enumerate(pi_chunk_ids):
                 pi_map[cid] = 1.0 - (rank * 0.05)
 
-        # ── Merge & re-rank ───────────────────────────────────────────
-        merged = self._merge_results(vector_map, pi_map, top_k)
+        # ── Three-way merge & re-rank ─────────────────────────────────
+        merged = self._merge_results(vector_map, bm25_map, pi_map, top_k)
         return merged
 
     def _merge_results(
         self,
         vector_map: dict[str, RetrievalResult],
+        bm25_scores: dict[str, float],
         pi_scores: dict[str, float],
         top_k: int,
     ) -> list[RetrievalResult]:
-        """Reciprocal-rank-fusion-style merge of vector and PageIndex results."""
-        all_ids = set(vector_map.keys()) | set(pi_scores.keys())
+        """Three-way weighted merge of vector, BM25, and PageIndex results.
+
+        Base weights: 0.40 vector + 0.35 BM25 + 0.25 PageIndex.
+        Weights are dynamically re-normalised when a retriever is disabled
+        (empty score map → weight 0, remaining weights sum to 1.0).
+        """
+        all_ids = set(vector_map.keys()) | set(bm25_scores.keys()) | set(pi_scores.keys())
         scored: list[RetrievalResult] = []
 
-        # Fetch texts for PageIndex-only chunks
-        pi_only_ids = [cid for cid in pi_scores if cid not in vector_map]
-        pi_docs: dict[str, dict] = {}
-        if pi_only_ids:
-            for item in self._store.search_by_ids(pi_only_ids):
-                pi_docs[item["id"]] = item
+        # ── Dynamic weight calculation ────────────────────────────────
+        w_vec = 0.40
+        w_bm25 = 0.35 if bm25_scores else 0.0
+        w_pi = 0.25 if pi_scores else 0.0
+        total_w = w_vec + w_bm25 + w_pi
+        if total_w > 0:
+            w_vec /= total_w
+            w_bm25 /= total_w
+            w_pi /= total_w
+
+        # ── Fetch texts for chunks only found via BM25 or PageIndex ───
+        need_fetch = [cid for cid in all_ids if cid not in vector_map]
+        fetch_docs: dict[str, dict] = {}
+        if need_fetch:
+            for item in self._store.search_by_ids(need_fetch):
+                fetch_docs[item["id"]] = item
 
         for cid in all_ids:
             v_score = vector_map[cid].score if cid in vector_map else 0.0
+            b_score = bm25_scores.get(cid, 0.0)
             p_score = pi_scores.get(cid, 0.0)
 
-            # Weighted combination: vector 60%, PageIndex 40%
-            combined = 0.6 * v_score + 0.4 * p_score
+            combined = w_vec * v_score + w_bm25 * b_score + w_pi * p_score
+
+            # ── Source label ("+"-joined) ─────────────────────────────
+            sources: list[str] = []
+            if cid in vector_map:
+                sources.append("vector")
+            if cid in bm25_scores:
+                sources.append("bm25")
+            if cid in pi_scores:
+                sources.append("page_index")
+            source_label = "+".join(sources)
 
             if cid in vector_map:
                 result = vector_map[cid]
-                # Keep raw vector score, store reranked combo separately
                 result.reranker_score = combined
                 result.score = v_score
-                if cid in pi_scores:
-                    result.source = "both"
-            elif cid in pi_docs:
+                result.source = source_label
+            elif cid in fetch_docs:
                 result = RetrievalResult(
                     chunk_id=cid,
-                    text=pi_docs[cid]["document"],
+                    text=fetch_docs[cid]["document"],
                     score=0.0,
                     reranker_score=combined,
-                    source="page_index",
-                    metadata=pi_docs[cid].get("metadata", {}),
+                    source=source_label,
+                    metadata=fetch_docs[cid].get("metadata", {}),
                 )
             else:
                 continue

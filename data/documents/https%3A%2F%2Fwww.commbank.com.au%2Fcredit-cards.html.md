@@ -2,7 +2,7 @@
 url: https://www.commbank.com.au/credit-cards.html
 title: "Credit Cards Australia - CommBank"
 content_hash: 18cf0ee7da6acc8382fcf9f7195b1272
-fetched_at: 1772482920.310626
+fetched_at: 1772534840.221075
 ---
 
 # Credit Cards Australia - CommBank

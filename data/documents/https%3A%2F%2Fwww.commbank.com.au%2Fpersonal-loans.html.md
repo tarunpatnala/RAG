@@ -2,7 +2,7 @@
 url: https://www.commbank.com.au/personal-loans.html
 title: "Personal Loans | Flexible Repayments Available With CommBank"
 content_hash: 16f4c6a569752f0fcf83ddc4ad25118a
-fetched_at: 1772482919.703797
+fetched_at: 1772534839.2001548
 ---
 
 # Personal Loans | Flexible Repayments Available With CommBank
